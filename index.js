@@ -62,11 +62,21 @@ Aşağıdaki takimSkoru() fonksiyonununda aşağıdakileri yapınız:
   Örnek: takimSkoru çağrıldığında 10-25 arasında bir skor dönmeli
   
 Not: Bu fonskiyon, aşağıdaki diğer görevler için de bir callback fonksiyonu olarak da kullanılacak
+
+Math.random() -> 0 1 arası
+
+
 */
 
+
 function takimSkoru(/*Kodunuzu buraya yazınız*/){
+  return  Math.floor(Math.random() * 16) + 10;
+
     /*Kodunuzu buraya yazınız*/
 }
+
+console.log(takimSkoru());
+
 
 
 
@@ -86,9 +96,26 @@ Aşağıdaki macSonucu() fonksiyonununda aşağıdakileri yapınız:
 }
 */ 
 
-function macSonucu(/*Kodunuzu buraya yazınız*/){
-  /*Kodunuzu buraya yazınız*/
+function macSonucu(randomSayi,ceyrek){
+  //ev sahibi ve misafir takım için bir değişken
+  let evSahibi = 0;
+  let konuk = 0;
+
+  for (let i = 0; i < ceyrek; i++) {
+    evSahibi = evSahibi + randomSayi();
+    konuk += randomSayi();
+    
+  }
+
+  return {
+    EvSahibi: evSahibi,
+    KonukTakim: konuk,
+  };
+
 }
+console.log(macSonucu(takimSkoru,4));
+
+
 
 
 
@@ -109,10 +136,17 @@ Aşağıdaki periyotSkoru() fonksiyonununda aşağıdakileri yapınız:
   */
 
 
-function periyotSkoru(/*Kodunuzu buraya yazınız*/) {
-  /*Kodunuzu buraya yazınız*/
+function periyotSkoru(callback) {
+
+  return {
+    EvSahibi: callback(),
+    KonukTakim: callback(),
+  };
 
 }
+
+console.log(macSonucu(takimSkoru));
+
 
 
 /* Zorlayıcı Görev 5: skorTabelasi() 
@@ -146,10 +180,39 @@ MAÇ UZAR ise skorTabelasi(periyotSkoru,takimSkoru,4)
 ] */
 // NOTE: Bununla ilgili bir test yoktur. Eğer logladığınız sonuçlar yukarıdakine benziyor ise tmamlandı sayabilirsiniz.
 
-function skorTabelasi(/*Kodunuzu buraya yazınız*/) {
-  /*Kodunuzu buraya yazınız*/
+function skorTabelasi(periyotSkoru,takimSkoru,ceyrekSayisi) {
+  let tabela = [];
+  let evSahibi = 0;
+  let konukTakim = 0; 
+  
+  for (let i = 0; i < ceyrekSayisi; i++) {
+    let periyotSonucu = periyotSkoru(takimSkoru);
+
+    evSahibi += periyotSonucu.EvSahibi;
+    konukTakim = periyotSonucu.KonukTakim;
+    
+    tabela.push(`${i+1}. Periyot: Ev Sahibi ${periyotSonucu.EvSahibi} - Konuk Takım ${periyotSonucu.KonukTakim}`)
+  }
+
+    while (evSahibi == konukTakim){
+      let sayac = 1;
+      let periyotSonucu = periyotSkoru(takimSkoru);
+
+      evSahibi += periyotSonucu.EvSahibi;
+      konukTakim = periyotSonucu.KonukTakim;
+    
+    tabela.push(`${sayac}. Uzatma: Ev Sahibi ${periyotSonucu.EvSahibi} - Konuk Takım ${periyotSonucu.KonukTakim}`)
+      sayac++;
+
+    }
+
+    tabela.push(`Maç sonucu: Ev Sahibi ${evSahibi} - Konuk Takım ${konukTakim}`);
+
+return tabela;
+
 }
 
+console.log(skorTabelasi(periyotSkoru,takimSkoru,4))
 
 
 
